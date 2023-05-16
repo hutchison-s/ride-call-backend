@@ -1,12 +1,12 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 5000;
 const cors = require('cors');
 const mongoose = require('mongoose');
 const aws = require('aws-sdk');
 
 let s3 = new aws.S3({
-  uri: process.env.MONGO_URI
+  uri: process.env.MONGO_URI,
+  port: process.env.PORT || 5000
 });
 
 require('dotenv').config();
@@ -24,6 +24,6 @@ connection.once('open', ()=>{
 const familyRouter = require('./routes/families');
 app.use('/families', familyRouter);
 
-app.listen(PORT, ()=>{
-    console.log('Server running on port', PORT)
+app.listen(s3.port, ()=>{
+    console.log('Server running on port', s3.port)
 })
