@@ -9,12 +9,15 @@ let s3 = new aws.S3({
   port: process.env.PORT || 5000
 });
 
+const uri = s3.uri;
+const port = s3.port;
+
 require('dotenv').config();
 
 app.use(cors());
 app.use(express.json());
 
-const uri = s3.uri;
+
 mongoose.connect(uri, {useNewUrlParser: true});
 const connection = mongoose.connection;
 connection.once('open', ()=>{
@@ -24,6 +27,6 @@ connection.once('open', ()=>{
 const familyRouter = require('./routes/families');
 app.use('/families', familyRouter);
 
-app.listen(s3.port, ()=>{
-    console.log('Server running on port', s3.port)
+app.listen(port, ()=>{
+    console.log('Server running on port', port)
 })
