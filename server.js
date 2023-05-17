@@ -2,17 +2,10 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
-const aws = require('aws-sdk');
-
-let s3 = new aws.S3({
-  uri: process.env.MONGO_URI,
-  port: process.env.PORT || 5000
-});
-
-const uri = s3.uri;
-const port = s3.port;
-
 require('dotenv').config();
+
+const uri = process.env.MONGO_URI
+const port = process.env.PORT || 5000
 
 app.use(cors());
 app.use(express.json());
