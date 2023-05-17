@@ -1,11 +1,5 @@
 const router = require('express').Router();
 let Family = require('../models/familyModel.js');
-const aws = require('aws-sdk');
-
-let s3 = new aws.S3({
-    user: process.env.API_USER,
-    pass: process.env.API_PASS
-})
 
 
 router.route('/').get((req, res)=> {
@@ -77,8 +71,8 @@ router.route('/uncall/:id').post((req, res) => {
 });
 
 const auth = {
-    user: s3.user,
-    pass: s3.pass
+    user: process.env.API_USER,
+    pass: process.env.API_PASS
 }
 
 router.route('/login').post((req, res)=> {
