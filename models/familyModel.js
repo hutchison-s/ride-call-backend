@@ -13,6 +13,10 @@ const childSchema = new Schema({
         type: String,
         required: true,
         unique: false
+    },
+    dateCollected: {
+        type: String,
+        required: false
     }
 })
 

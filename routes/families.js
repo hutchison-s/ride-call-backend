@@ -51,9 +51,20 @@ router.route('/add').post((req, res) => {
 router.route('/call/:id').post((req, res) => {
     Family.findOne({id: req.params.id})
         .then(family => {
-            family.dateCalled = new Date().toDateString() 
+            family.dateCalled = req.body.date; 
             family.save()
                 .then(() => res.json("Ride called!"))
+                .catch(err => res.status(400).json("Error: "+err));
+        })
+        .catch(err => res.status(400).json("Error: "+err));
+});
+
+router.route('/collect/:id').post((req, res) => {
+    Family.findOne({id: req.params.id})
+        .then(family => {
+            family.members.filter(kid => kid.name === req.body.name)[0] = req.body.date; 
+            family.save()
+                .then(() => res.json("Member collected!"))
                 .catch(err => res.status(400).json("Error: "+err));
         })
         .catch(err => res.status(400).json("Error: "+err));
