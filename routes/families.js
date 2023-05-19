@@ -2,6 +2,23 @@ const router = require('express').Router();
 let Family = require('../models/familyModel.js');
 
 
+router.route('/login').post((req, res)=> {
+    if (req.body.user == auth.user && req.body.pass == auth.pass) {
+        res.json({auth: "authorized", key: process.env.API_KEY})
+    } else {
+        res.json({auth: "incorrect"})
+    }
+});
+
+router.use((req, res, next) => {
+    const key = req.headers['Authorization'];
+    if (key === process.env.API_KEY) {
+        next()
+    } else {
+        res.status(403).json("Missing API Key")
+    }
+})
+
 router.route('/').get((req, res)=> {
     Family.find()
         .then(families => res.json(families))
@@ -86,13 +103,7 @@ const auth = {
     pass: process.env.API_PASS
 }
 
-router.route('/login').post((req, res)=> {
-    if (req.body.user == auth.user && req.body.pass == auth.pass) {
-        res.json({auth: "authorized"})
-    } else {
-        res.json({auth: "incorrect"})
-    }
-});
+
 
 
 
