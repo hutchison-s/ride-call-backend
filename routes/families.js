@@ -89,6 +89,25 @@ router.route('/uncall/:id').post((req, res) => {
         .catch(err => res.status(400).json("Error: "+err));
 });
 
+router.route('/upgrade/:id').get((req, res) => {
+    Family.findOne({id: req.params.id})
+        .then(family => {
+            for (const member of family.members) {
+                let currentGrade = parseInt(member.grade, 10);
+                member.grade = currentGrade === NaN
+                    ? "1"
+                    : member.grade = (currentGrade += 1).toString() 
+                console.log("Upgraded "+member.name)
+            }    
+            family.members = [...family.members].filter(x => x.grade !== "9");
+            family.save()
+                .then(
+                    res.json("Upgrade for "+family.lastName+" complete.")
+                ).catch(err => res.status(401).json("Error saving record"))
+        })
+        .catch(err => res.status(400).json("Error: "+err))
+})
+
 
 
 
