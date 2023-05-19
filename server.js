@@ -17,6 +17,19 @@ connection.once('open', ()=>{
     console.log('MongoDB database connection established successfully');
 });
 
+const auth = {
+    user: process.env.API_USER,
+    pass: process.env.API_PASS
+}
+
+app.post('/login', (req, res)=> {
+    if (req.body.user == auth.user && req.body.pass == auth.pass) {
+        res.json({auth: "authorized", key: process.env.API_KEY})
+    } else {
+        res.json({auth: "incorrect"})
+    }
+});
+
 const familyRouter = require('./routes/families');
 app.use('/families', familyRouter);
 
