@@ -93,9 +93,9 @@ router.route('/upgrade/:id').get((req, res) => {
     Family.findOne({id: req.params.id})
         .then(family => {
             for (const member of family.members) {
-                member.grade = member.grade === "K"
+                member.grade = (member.grade === "K")
                     ? "1"
-                    : (parseInt(member.grade, 10) += 1).toString() 
+                    : (parseInt(member.grade, 10) + 1).toString() 
                 console.log("Upgraded "+member.name)
             }    
             family.members = [...family.members].filter(x => x.grade !== "9");
